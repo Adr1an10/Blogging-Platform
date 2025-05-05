@@ -20,6 +20,9 @@ public class Role {
         ROLE_ADMIN
     }
 
+    public Role() {
+    }
+
     public Role(UUID roleId, ERole name) {
         this.roleId = roleId;
         this.name = name;

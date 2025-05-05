@@ -1,4 +1,4 @@
-package io.github.angel.raa.dto.authentication;
+package io.github.angel.raa.dto.request.authentication;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;

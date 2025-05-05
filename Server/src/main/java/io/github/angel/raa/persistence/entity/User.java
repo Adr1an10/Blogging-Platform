@@ -166,4 +166,7 @@ public class User implements UserDetails {
     public void setRoles(List<Role> roles) {
         this.roles = roles;
     }
+    public void addRole(Role role) {
+        roles.add(role);
+    }
 }

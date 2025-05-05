@@ -30,6 +30,9 @@ public class Category {
         this.posts = posts;
     }
 
+    public Category() {
+    }
+
     public UUID getCategoryId() {
         return categoryId;
     }
