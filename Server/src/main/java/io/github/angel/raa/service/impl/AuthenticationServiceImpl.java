@@ -7,6 +7,7 @@ import io.github.angel.raa.dto.response.AuthenticateResponse;
 import io.github.angel.raa.dto.response.Response;
 import io.github.angel.raa.exception.DuplicateEmailException;
 import io.github.angel.raa.exception.DuplicateUsernameException;
+import io.github.angel.raa.exception.EmailNotFoundException;
 import io.github.angel.raa.persistence.entity.Role;
 import io.github.angel.raa.persistence.entity.User;
 import io.github.angel.raa.persistence.repository.RoleRepository;
@@ -44,11 +45,11 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         String username = login.username();
         String email = login.email();
         String password = login.password();
-        if(repository.existsByEmail(email)){
-            throw new DuplicateEmailException("El correo electrónico ya está registrado");
+        if(!repository.existsByEmail(email)){
+            throw new EmailNotFoundException("El correo electrónico no está registrado.");
         }
-        if(repository.existsByUsername(username)){
-            throw new DuplicateUsernameException("El nombre de usuario ya está en uso");
+        if(!repository.existsByUsername(username)){
+            throw new UsernameNotFoundException("El nombre de usuario no existe.");
         }
         UserDetails details = repository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException("Sorry, we couldn't find the user you're looking for. Please double-check the entered information and try again."));
 
@@ -74,7 +75,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         String password = register.password();
         String fullName = register.fullName();
         if(repository.existsByEmail(email)){
-            throw new DuplicateEmailException("\"El correo electrónico ya está registrado");
+            throw new DuplicateEmailException("El correo electrónico ya está registrado");
         }
         if(repository.existsByUsername(username)){
             throw new DuplicateUsernameException("El nombre de usuario ya está en uso");
