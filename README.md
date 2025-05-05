@@ -43,12 +43,3 @@ mvn spring-boot:run
 ```
 
 
-blogging-platform/
-├── Server/          # Código Spring Boot
-│   ├── src/
-│   ├── pom.xml      
-├── frontend/         # Código React
-│   ├── public/
-│   ├── src/
-│   ├── package.json
-├── README.md
