@@ -5,9 +5,12 @@ import io.github.angel.raa.dto.request.authentication.Register;
 import io.github.angel.raa.dto.response.AuthenticateResponse;
 import io.github.angel.raa.dto.response.Response;
 
+import java.util.UUID;
+
 public interface AuthenticationService {
     Response<AuthenticateResponse> login(Login login);
     Response<AuthenticateResponse> register(Register register);
+    UUID getCurrentUserId();
 
 
 }

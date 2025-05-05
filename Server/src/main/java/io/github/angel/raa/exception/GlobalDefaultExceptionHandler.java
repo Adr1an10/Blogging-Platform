@@ -42,6 +42,19 @@ public class GlobalDefaultExceptionHandler  {
         return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
     }
 
+    @ExceptionHandler(UnauthorizedException.class)
+    public ResponseEntity<ErrorResponse> handleUnauthorizedException(UnauthorizedException ex, WebRequest request) {
+        ErrorResponse errorResponse = new ErrorResponse()
+                .message(ex.getMessage())
+                .status(HttpStatus.UNAUTHORIZED)
+                .path(((ServletWebRequest) request).getRequest().getRequestURI())
+                .timestamp(LocalDateTime.now().format(formatter))
+                .build();
+
+        return new ResponseEntity<>(errorResponse, HttpStatus.UNAUTHORIZED);
+    }
+
+
     @ExceptionHandler(DuplicateEmailException.class)
     public ResponseEntity<ErrorResponse> handleDuplicateEmailException(DuplicateEmailException ex, WebRequest request) {
         ErrorResponse errorResponse = new ErrorResponse()

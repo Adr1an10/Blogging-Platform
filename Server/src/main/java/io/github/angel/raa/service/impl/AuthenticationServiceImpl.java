@@ -8,6 +8,7 @@ import io.github.angel.raa.dto.response.Response;
 import io.github.angel.raa.exception.DuplicateEmailException;
 import io.github.angel.raa.exception.DuplicateUsernameException;
 import io.github.angel.raa.exception.EmailNotFoundException;
+import io.github.angel.raa.exception.UnauthorizedException;
 import io.github.angel.raa.persistence.entity.Role;
 import io.github.angel.raa.persistence.entity.User;
 import io.github.angel.raa.persistence.repository.RoleRepository;
@@ -16,12 +17,14 @@ import io.github.angel.raa.service.AuthenticationService;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 @Service
 public class AuthenticationServiceImpl implements AuthenticationService {
@@ -97,5 +100,15 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                 .code(200)
                 .data(response)
                 .buildResponse();
+    }
+
+    @Override
+    public UUID getCurrentUserId() {
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if (principal instanceof UserDetails) {
+            String username = ((UserDetails) principal).getUsername();
+            return repository.findByUsername(username).map(User::getUserId).orElse(null);
+        }
+        throw new UnauthorizedException("User not authenticated or invalid user details");
     }
 }
